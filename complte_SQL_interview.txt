@@ -1,0 +1,304 @@
+Q. write a query to retrieve data from two related tables using an Inner join
+
+#employe # doctors
+select emp_name,emp.city,doctors.city,doc_name,specialization 
+from employee
+inner join doctors
+on emp.position_code = doctor.postion_code;
+
+Q. How do you filter using where clause 
+select emp_name from employee
+where emp_id = 1001
+
+
+DDL - Data Definiation Language
+# create - crete database, create table 
+# alter - modify existing database object, such as table
+# drop - delete entire table or view of table or other objects in  database
+
+
+create database medgini;
+
+create table employees (
+emp_id primary key auto_icrement,
+emp_name varchar(255),
+department archar(55),
+hire_date date,
+salary decimal(10,2)
+);
+
+# insert values 
+insert into employees (emp_id,emp_name,department,hire_date,salary)
+values
+(1,'subodhrana',it,'2022-10-10',25000.00)
+
+# alter-modify existing table or oject
+alter table employees
+add column email varchar(255);
+
+#change data type of salary
+alter table employees
+alter column salary decimal(12,2);
+
+#add primary key
+alter table employees
+add primary key (emp_id);
+
+
+##########DROP Command$######
+
+Q. Remove column
+alter table employees
+drop column position;
+
+Q. Modify column name
+alter table employees
+rename column department to Dept; (changes dapartment to dept)
+
+# add foriegn key constraints
+- add foregin key constaints on 'department-id' refrencing department table
+
+alter table employees
+add constraints fk_department
+foregin key (department_id)
+refrences depertments(depatment_id);
+
+
+# add deafult values
+
+alter table employees
+alter column salary set default 25000.00;
+
+
+# remove default values
+
+alter table employees
+alter column salary drop default;
+
+
+# add unique constraints
+alter table employees
+add constraints unique_email unique(email);
+
+
+#drop primary key
+alter table emploee
+drop constraint employee_pkey;
+
+
+
+
+
+#--------------- DROP COMMAND--------------
+
+DROP command used for reove table , indexes, constraints
+ or other object present in the data base
+
+# drp a table
+Drop table emploees;
+
+#Drop column
+alter table employees
+drop column salary;
+
+
+#drop index
+drop index idx_department;
+
+#drop primary constraints
+alter table employees
+drop constraints employess_pkey;
+
+#drop a unique constraints
+alter table employees
+drop contraints unique_emil;
+
+# drop froign key
+alter table employees
+drop constraint fk_departments;
+
+# drop databases
+drop database medgini
+
+#Drop a view
+drop view employee_view;
+
+# drop trigger
+drop trigger trigger_name on employyes;
+
+
+#--------------what is view ----------------#
+view is nothing but it is virtual table that is based on the resut 
+of select query
+-->it does not store data but provides way to present the data
+store one or more table
+
+
+Q2. why would use a view?
+view basically use for reduce complexity and simflify queery
+and provide additional layer of security
+ 
+Q3. How do you create a view?
+
+crate view view_name AS
+select column1, column2,.....
+from table_name
+where condition;
+
+create view employee_view as
+select emp_name, state
+from employee
+where emp_id = 10
+
+Q4. can you update data through a view?
+yes but based on single table not all database but some database they allow
+
+Q5. How do you drop a view?
+
+drop view employee_view;
+
+Q6 Difference between view and table?
+table - physical storage structure that hold data
+view- view is a virtual table doesnt store any data
+
+
+Q7. can a view join multiple tables?
+yes- view cam join multiple table using the **JOIN clause**
+resulting query may be view only no any kind of editable 
+
+
+
+#----------Aggreagte function in SQL-------------#
+
+is nothing but provide single value summarizations
+1.count
+slect count(emp_name) from employee
+where state = 'chhatisgarh';
+
+2.sum
+select sum(invoice_amount) from employee
+where state = 'Telangana';
+
+3.AVG
+select avg(chemist_active) from employee
+
+4.Min 
+5.Max
+
+6.Group concat
+- concatenate values from multiple rows into single string
+
+select group_concat(first_name,middle_name,last_name,pin_code) from employee
+where state = 'Jharkhand'
+group by state;
+
+8. Count distinct
+select count(distinct emp_id) 
+from employee;
+
+
+DML- Data Manipulation Language
+1.select
+2.insert
+3.update
+4.delete
+
+#---------select cmd----
+selct * from emplyees;
+
+#----------insert command-------
+Q.insert new employee into the 'employee' table
+insert into employees(emp_name,emp_salary,department)
+values('rana',60000,'IT')
+
+#-----------Update cmd---------
+Q. update the salry of emplyee in the 'IT' department
+update employees
+set emp_salary = emp_salry * 5%
+where department = 'IT';
+
+
+#---------------------- updte employee-----
+Q. update 
+update employees 
+set emp_id =55
+where emp_id=505;
+
+Q.Update the salary of employee with id 101
+update employees
+set emp_salary = 25000
+where emp_id = 101;
+
+
+#----------Delete command-------------------
+Q. Delte emloyees with a salry less than 30000
+
+delete from employees
+where salry <30000;
+
+Q. delete comand with multiple conditions
+
+delete from employees
+where depatment = 'IT'
+AND emp_salry <30000;
+
+
+
+# subquerries and joins------
+
+#--Subqueries
+is also called nested query or inner query
+is a query within another query in sql .
+
+--> usually in the where or having clause
+
+** the reult of the subquery is used by the main query to perform frther analysis
+
+example:-
+select column1, col2,..
+from employees
+where column_name operator (select column_name from another_able where condition);
+
+# filtering data by using nested query
+
+select employee_name,salary
+from employees
+where salary > (select avg(Salary) from emplyess);
+
+
+# checking Existence
+Q. use a subquery to check for the existence of a record 
+in another table
+
+select customer_name
+from customers
+where exists (select 1 from orders where customers.customer_id = orders.customers_id);
+
+
+# calculations
+
+select departments (select avg(salary) from employes
+where employees.department_id = department.department_id)
+as avg_salary
+from departments
+
+# in , ANY or all operator 
+select product_name 
+from products
+where product_id in(slect product_id from order_items 
+where quantity >10);
+
+
+# order of sql query
+1.from
+2.where
+3.group by
+4.having
+5.slect
+6.distinct
+7.order by
+8.limit
+
+
+
+
